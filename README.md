@@ -13,11 +13,21 @@ Autonomous robotics injection came as a safe and effective solution for deliveri
 
 **Cobi**: Waterloo has developed Cobi, the world’s first autonomous robotic needle-less injection. With LIDAR sensors and AI position tracking, Cobi is able to identify the human body. Then, as shown in the picture below, the 360-degree depth perception guides the needless robot arm to the injection site on the patient’s arm to deliver the drug. [2]
 
-![](images/intro1.png)
+<!-- ![Cobi, Waterloo's autonomous needle-less injection robot [2]](images/intro1.png) -->
+<a align="center">![](images/intro1.png) 
+<center>
+Cobi, Waterloo's autonomous needle-less injection robot [2]
+</center>
+</a>
 
 **Houyi**: As shown in the picture below, the automatic vaccine injection robot developed by Tongji University in Shanghai can also automatically identify the designated injection position on the human body, by means of 3D human body modeling. The recognition algorithm fits the 3D point picked up by cameras, with the corresponding parts on the 3D model, and then gives the injection spot. [3,4]
 
-![](images/intro2.png)
+<!-- ![Houyi: Tongji University's automatic vaccine injection robot [3,4]](images/intro2.png) -->
+<a align="center">![](images/intro2.png) 
+<center>
+Houyi: Tongji University's automatic vaccine injection robot [3,4]
+</center>
+</a>
 
 It is worth to mention that both solutions employ the needle-free vaccinations which ensure the safety and painless injection. Another key element of these robots is the ability of detecting the right injection site with intelligent ways. In both cases, complex 3D model recognition algorithm, equipped with multi-dimension sensors were utilized to fulfil the detection assignment. While these algorithms can provide accurate site detection, they also involve a lot of development efforts, costly sensing techniques and expensive cameras. These all contribute to the overall cost of these robots. In this project, we claim that coming up with a low-cost yet effective solution for autonomous injection site is important and can make a difference for deploying the robots to different parts of the world. Let's first understand where the injection site is usually located on the arm.
 
@@ -25,7 +35,12 @@ It is worth to mention that both solutions employ the needle-free vaccinations w
 
 The current COVID-19 vaccines are mainly given intramuscularly because muscles have good vascularity, which enables injection quickly involved in the systemic circulation. All things considered, the deltoid muscle (shown in the following figure) is the most suitable site for vaccination, because of its adequate blood supply and large area [5]. Based on the figure, we consulted the medical experts, and we conclude that the intramuscular injection site is a relative large body area and the differences exposed from individuals for this area are relatively small. This has inspired our idea of looking into an alternative solution for detecting the site with vision-AI assisted techniques.
 
-![](images/intro3.jpg)
+<!-- ![Intramuscular Injection Site [5]](images/intro3.jpg) -->
+<a  align="center">![](images/intro3.jpg) 
+<center>
+Intramuscular Injection Site [5]
+</center>
+</a>
 
 ### Vision-AI Assisted Injection Site Detection
 
@@ -41,7 +56,11 @@ Currently there are only few work focusing on 2D vision-AI assisted human arm de
 
 Our project is developed according to the logic flow shown below.
 
-![](images/flowchart1.png)
+<a  align="center">![](images/flowchart1.png) 
+<center>
+The flow chart of this project
+</center>
+</a>
 
 The goal is to let the monitor connected with KV260 indicate the injection site on patients’ arm. Due to the limitation on hardware resources and small number of existing arm detection work currently, we decided to simplify the problem into face detection assisted with post-processing to indicate results. For the main part of our project, we did research for model selection and training strategy based on Vitis-AI. And for post-processing, it is mainly OpenCV coding with VVAS usage. Then in testing stage, we used collected images that matched our application scenario to see the accuracy under different training epochs or training strategies, and then retrain the model accordingly. Lastly, the demonstration part is based on picture input for a more clear and stable results presentation.
 
@@ -167,12 +186,6 @@ In the following 3 sections, we will provide you detailed building flow explanat
 The supported Vitis-AI models that can work with VVAS are limited. For model class FACEDETECT, which is what we need, only densebox is available for VVAS and with high accuracy. Considering our application scenario is vaccination. To reduce the risk of virus transmission, people mostly wear a mask while they got their shots. The pre-trained densebox in Vitis-AI uses a database WIDER FACE for general face detection training, where medically masked faces are not emphasized. To ensure that masked faces can be well detected, especially when people are turning their side face to the camera during injection, we trained densebox incrementally based on the pre-trained one using MAFA, one of the most popular datasets for masked face.
 
 The detailed building process for preparing the AI model is shown below.
-<!-- 
-TODO:
-    utilizing currently well-developed model is more efficient
-    Vitis-AI has pte-trained and high accuracy face detection model to be used
-    make use of the position of face to find the position for injection is possible
--->
 
 **Model Training**
 
@@ -331,7 +344,12 @@ Notice: Due to the sudden outbreak of COVID-19 in Shanghai in March, we cannot e
 
 Below is how we did our demo after we start J-Eye on KV260. KV260 is connected with a camera and a monitor as it is shown below in the picture. The camera here will be equipped on the future robot arm for injection. And the monitor is also part of the robot body. People receiving injection should stand according to the marked position on the ground.  
 
-![](images/demo_setup.jpg)
+<!-- ![Demonstration Setup](images/demo_setup.jpg) -->
+<a align="center">![an image](images/demo_setup.jpg) 
+<center>
+Demonstration Setup 
+</center>
+</a>
 
 Make sure that you stand up straight in front of the camera and your left side face is about in the screen center.
 
@@ -349,18 +367,30 @@ If you stand in the detectable range, the application will locate your face and 
 
 ## Summary
 
-The above results and demonstrations show that our application works well when the vaccinated people are in the detectable range and in a ready-to-be-injected posture like the photos above. There are surely limitation on its performance for detection under more complicated conditions, but we will try to fix the problems to let it fit in more scenarios. 
+The above results and demonstrations show that our proposed solution works well when the patient are in the detectable range and in a ready-to-be-injected posture like the photos above. There are surely limitation on its performance for detection under more complicated conditions when compared to 3D solutions, but this was really our first attempt. Our ongoing efforts include incorporating more complex models and working with researchers from Mechanical Engineering department to prototype the whole system. A conceptual diagram is shown below.
 
-Then what did we contribute in this project?
-<!--but the low cost in our technical development process, easy setup, and its satisfying results under certain conditions fulfill our project goals. -->
-<!-- Contribution list-->
+Here we briefly discuss the whole system working flow. The camera, embedded on the robotic arm, will be connected with the KV260 board. The detection result will be shown on the screen of the monitor. The robotic arm will receive the accurate detection information (e.g. coordinate) from the board and make the move accordingly. In the case where the patient is out of the scope of the camera, the warning information will be shown on the monitor until it gets back to the normal state. The detection will start once the human stands still and the face is in the camera view.
+
+<a>![](images/concept.png)
+A conceptual diagram of the J-Eye enabled autonomous vaccination robot
+</a>
+
 - **2D injection point detection with low cost and high adaptability:** The developing period of our project is relatively short and the cost is surely lower than the mentioned 3D sensing based injection point detection project. Meanwhile, J-eye has great potential for other body parts detection with post-pocessing and alternative models. As for the functionality, based on our presenting results and demonstration, the detection is acceptable and we will do further optimization surely.
 - **Featureless body part detection technique exploration:** In our application scenario, arm detection is indispensable but human arm has too few features to be distinguishable enough in 2D images. So are many other human body parts that is pure skin but still important for medical treatment. We know that face detection is one of the well-developed vision-AI models nowadays and its accuracy has been proved satisfying for its wide usage in the market. What we have done is exploring its value in detecting other featureless human body parts assisted with post-processing transformation.
 - **Working flow enhancement:** Our project fully benefits from Xilinx's hardware and software supports. But in VVAS setup and compiling part, some description is not so friendly for beginners. We tried to complete the above building process in details and intended to contribute to the official document. 
 
 Even though here the demonstration only shows the potential injection point on the screen, it is also applicable to integrate it onto the next-gen injection robot. Below is our concept diagram. The camera will be fixed on the robot arm. It receives information about detected injection point location from KV260. And it will move towards the person if KV260 confirms safe and correct, otherwise it stays still and a warning message will be given on the screen. 
-![](https://codimd.s3.shivering-isles.com/demo/uploads/d9acc21b9d4505bafc135f851.png)
 
+Lastly, we summarize our major contributions below for this project.
+
+- **2D injection site detection with low cost and high adaptability:** The developing period of our project is relatively short and the cost is surely lower than the 3D sensing based injection site detection project. Meanwhile, J-eye has great potential for using other models. As for the functionality, based on our presenting results and demonstration, we show that the initial attempt is valid and effective. We are working on improving the detection accuracy by looking at more complex models and a potential usage of sampling the human body pictures from multiple cameras.    
+  
+- **Using Vitis-AI models to support featureless body area detection:** In our application scenario, arm detection is indispensable but human arm has too few features to be distinguishable enough in 2D images. So are many other human body parts that is pure skin but still important for medical treatment. We observed that face detection is one of the well-developed vision-AI models nowadays and its accuracy has been proved satisfying for its wide usage in the market. Our project transfers its value in detecting other featureless human body parts with adequate post-processing actions.
+- **Enhancing the Xilinx flow:** Our project fully benefits from Xilinx’s hardware and software supports. But in VVAS setup and compiling part, some descriptions were outdated or made hard for beginners. During the development process, we also documented detailed instructions for the whole building process. It is fully open-sources and made available to the community.
+
+## Acknowledgment
+
+We would like to thank the Xilinx team for their generous help and their patience for answering all questions throughout this project, especially during the company merger and acquisition. We appreciate local health experts and medical staff for offering their professional advice.
 
 ## References
 [1] https://www.cnbc.com/2022/02/02/these-countries-have-the-lowest-covid-vaccination-rates-in-the-world.html  
