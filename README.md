@@ -13,21 +13,19 @@ Autonomous robotics injection came as a safe and effective solution for deliveri
 
 **Cobi**: Waterloo has developed Cobi, the world’s first autonomous robotic needle-less injection. With LIDAR sensors and AI position tracking, Cobi is able to identify the human body. Then, as shown in the picture below, the 360-degree depth perception guides the needless robot arm to the injection site on the patient’s arm to deliver the drug. [2]
 
-<!-- ![Cobi, Waterloo's autonomous needle-less injection robot [2]](images/intro1.png) -->
-<a align="center">![](images/intro1.png) 
-<center>
+<p align="center">
+<img src="images/intro1.png">     
 Cobi, Waterloo's autonomous needle-less injection robot [2]
-</center>
-</a>
+</p>
 
 **Houyi**: As shown in the picture below, the automatic vaccine injection robot developed by Tongji University in Shanghai can also automatically identify the designated injection position on the human body, by means of 3D human body modeling. The recognition algorithm fits the 3D point picked up by cameras, with the corresponding parts on the 3D model, and then gives the injection spot. [3,4]
 
-<!-- ![Houyi: Tongji University's automatic vaccine injection robot [3,4]](images/intro2.png) -->
-<a align="center">![](images/intro2.png) 
-<center>
+<p align="center">
+<img src="images/intro2.png">
+<div align="center">
 Houyi: Tongji University's automatic vaccine injection robot [3,4]
-</center>
-</a>
+</div>
+</p>
 
 It is worth to mention that both solutions employ the needle-free vaccinations which ensure the safety and painless injection. Another key element of these robots is the ability of detecting the right injection site with intelligent ways. In both cases, complex 3D model recognition algorithm, equipped with multi-dimension sensors were utilized to fulfil the detection assignment. While these algorithms can provide accurate site detection, they also involve a lot of development efforts, costly sensing techniques and expensive cameras. These all contribute to the overall cost of these robots. In this project, we claim that coming up with a low-cost yet effective solution for autonomous injection site is important and can make a difference for deploying the robots to different parts of the world. Let's first understand where the injection site is usually located on the arm.
 
@@ -35,12 +33,12 @@ It is worth to mention that both solutions employ the needle-free vaccinations w
 
 The current COVID-19 vaccines are mainly given intramuscularly because muscles have good vascularity, which enables injection quickly involved in the systemic circulation. All things considered, the deltoid muscle (shown in the following figure) is the most suitable site for vaccination, because of its adequate blood supply and large area [5]. Based on the figure, we consulted the medical experts, and we conclude that the intramuscular injection site is a relative large body area and the differences exposed from individuals for this area are relatively small. This has inspired our idea of looking into an alternative solution for detecting the site with vision-AI assisted techniques.
 
-<!-- ![Intramuscular Injection Site [5]](images/intro3.jpg) -->
-<a  align="center">![](images/intro3.jpg) 
-<center>
+<p align="center">
+<img src="images/intro3.jpg">       
+<div align="center">
 Intramuscular Injection Site [5]
-</center>
-</a>
+</div>
+</p>
 
 ### Vision-AI Assisted Injection Site Detection
 
@@ -56,11 +54,10 @@ Currently there are only few work focusing on 2D vision-AI assisted human arm de
 
 Our project is developed according to the logic flow shown below.
 
-<a  align="center">![](images/flowchart1.png) 
-<center>
+<p align="center">
+<img src="images/flowchart1.png">       
 The flow chart of this project
-</center>
-</a>
+</p>
 
 The goal is to let the monitor connected with KV260 indicate the injection site on patients’ arm. Due to the limitation on hardware resources and small number of existing arm detection work currently, we decided to simplify the problem into face detection assisted with post-processing to indicate results. For the main part of our project, we did research for model selection and training strategy based on Vitis-AI. And for post-processing, it is mainly OpenCV coding with VVAS usage. Then in testing stage, we used collected images that matched our application scenario to see the accuracy under different training epochs or training strategies, and then retrain the model accordingly. Lastly, the demonstration part is based on picture input for a more clear and stable results presentation.
 
@@ -345,11 +342,10 @@ Notice: Due to the sudden outbreak of COVID-19 in Shanghai in March, we cannot e
 Below is how we did our demo after we start J-Eye on KV260. KV260 is connected with a camera and a monitor as it is shown below in the picture. The camera here will be equipped on the future robot arm for injection. And the monitor is also part of the robot body. People receiving injection should stand according to the marked position on the ground.  
 
 <!-- ![Demonstration Setup](images/demo_setup.jpg) -->
-<a align="center">![an image](images/demo_setup.jpg) 
-<center>
+<p align="center">
+<img src="images/demo_setup.jpg">
 Demonstration Setup 
-</center>
-</a>
+</p>
 
 Make sure that you stand up straight in front of the camera and your left side face is about in the screen center.
 
@@ -371,7 +367,8 @@ The above results and demonstrations show that our proposed solution works well 
 
 Here we briefly discuss the whole system working flow. The camera, embedded on the robotic arm, will be connected with the KV260 board. The detection result will be shown on the screen of the monitor. The robotic arm will receive the accurate detection information (e.g. coordinate) from the board and make the move accordingly. In the case where the patient is out of the scope of the camera, the warning information will be shown on the monitor until it gets back to the normal state. The detection will start once the human stands still and the face is in the camera view.
 
-<a>![](images/concept.png)
+<p align="center">
+<img src="images/concept.png">
 A conceptual diagram of the J-Eye enabled autonomous vaccination robot
 </a>
 
